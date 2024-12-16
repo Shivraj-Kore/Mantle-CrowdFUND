@@ -5,6 +5,7 @@ import { ethers } from 'ethers';
 import { readCampaigns } from '@/utils/web3';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -65,50 +66,55 @@ export default function Campaigns() {
         <div className="text-center text-gray-500">No campaigns found.</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {campaigns.map((campaign) => (
-            <Card key={campaign.id} className="overflow-hidden bg-gray-900 border border-teal-800 rounded-lg">
-              <div className="relative h-48 w-full">
-                <Image 
-                  src={campaign.image} 
-                  alt={campaign.title}
-                  layout="fill"
-                  objectFit="cover"
-                  className="opacity-80 hover:opacity-100 transition-opacity"
-                  onError={() => {
-                    // Fallback to placeholder image on error
-                    const imgElement = document.getElementById(`campaign-image-${campaign.id}`) as HTMLImageElement;
-                    if (imgElement) {
-                      imgElement.src = '/placeholder-image.jpg';
-                    }
-                  }}
-                />
-              </div>
-              <CardHeader>
-                <CardTitle className="text-[#4ADE80]">{campaign.title}</CardTitle>
-              </CardHeader>
-              <hr className="bg-[#177F3D] h-[1px] border-0 mx-[25px] mb-2" />
-              <CardContent>
-                <p className="text-gray-400 mb-4">
-                  {campaign.description.length > 100 
-                    ? `${campaign.description.slice(0, 100)}...` 
-                    : campaign.description}
-                </p>
-                <div className="flex justify-between text-sm text-gray-500">
-                  <span>Target: {ethers.formatEther(campaign.target)} ETH</span>
-                  <span>Raised: {ethers.formatEther(campaign.amountCollected)} ETH</span>
+          {campaigns.map((campaign) => {
+            const progress = Number(campaign.amountCollected) / Number(campaign.target) * 100;
+            
+            return (
+              <Card key={campaign.id} className="overflow-hidden bg-gray-900 border border-teal-800 rounded-lg">
+                <div className="relative h-48 w-full">
+                  <Image 
+                    src={campaign.image} 
+                    alt={campaign.title}
+                    layout="fill"
+                    objectFit="cover"
+                    className="opacity-80 hover:opacity-100 transition-opacity"
+                    onError={() => {
+                      const imgElement = document.getElementById(`campaign-image-${campaign.id}`) as HTMLImageElement;
+                      if (imgElement) {
+                        imgElement.src = '/placeholder-image.jpg';
+                      }
+                    }}
+                  />
                 </div>
-              </CardContent>
-              <CardFooter>
-                <Link href={`/campaigns/${campaign.id}`} className="w-full">
-                  <Button className="w-full bg-[#26CE63] hover:bg-[#177F3D] text-white">View Campaign</Button>
-                </Link>
-              </CardFooter>
-            </Card>
-          ))}
+                <CardHeader>
+                  <CardTitle className="text-[#4ADE80]">{campaign.title}</CardTitle>
+                </CardHeader>
+                <hr className="bg-[#177F3D] h-[1px] border-0 mx-[25px] mb-2" />
+                <CardContent>
+                  <p className="text-gray-400 mb-4">
+                    {campaign.description.length > 100 
+                      ? `${campaign.description.slice(0, 100)}...` 
+                      : campaign.description}
+                  </p>
+                  <div className="flex justify-between text-sm text-gray-500">
+                    <span>Target: {ethers.formatEther(campaign.target)} ETH</span>
+                    <span>Raised: {ethers.formatEther(campaign.amountCollected)} ETH</span>
+                  </div>
+                </CardContent>
+                {/* <div className="px-6 pb-4">
+                  <Progress value={progress} className="w-full h-2 bg-gray-800" />
+                  <p className="text-xs text-gray-500 mt-1 text-center">{progress.toFixed(2)}% funded</p>
+                </div> */}
+                <CardFooter>
+                  <Link href={`/campaigns/${campaign.id}`} className="w-full">
+                    <Button className="w-full bg-[#177F3D] hover:bg-[#26CE63] text-white">View Campaign</Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>
   );
 }
-
-

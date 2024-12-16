@@ -140,6 +140,7 @@ export default function CampaignDetails() {
           type="number"
           placeholder="Amount to donate (ETH)"
           value={donationAmount}
+          step="0.01"
           onChange={(e) => setDonationAmount(e.target.value)}
           className="flex-grow bg-gray-900 border-[#177F3D] text-white placeholder-gray-500 focus:ring-teal-500 focus:border-teal-500"
           disabled={isDeadlinePassed}

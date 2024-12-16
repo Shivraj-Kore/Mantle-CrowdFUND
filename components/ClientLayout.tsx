@@ -17,8 +17,13 @@ export const ClientLayout: React.FC<{ children: React.ReactNode }> = ({ children
 <div className="min-h-screen flex flex-col bg-black">
       <header className="bg-gray-900 shadow-md border-b border-teal-800">
         <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold text-[#4ADE80]">
-            CrowdFund
+          <Link href="/" className="text-xl font-bold text-teal-300 flex items-center gap-2">
+          <div className="w-3 h-3 bg-teal-400 rounded-full"></div>
+
+          <span>
+            
+            MantleFund
+            </span>
           </Link>
           <div className="flex items-center space-x-4">
             <Link href="/campaigns" className="text-gray-300 hover:text-teal-400 transition-colors">
@@ -36,7 +41,7 @@ export const ClientLayout: React.FC<{ children: React.ReactNode }> = ({ children
       </main>
       <footer className="bg-gray-900 text-gray-300 py-4 border-t border-teal-800">
         <div className="container mx-auto px-6 text-center">
-          &copy; 2024 CrowdFund. All rights reserved.
+          &copy; 2024 MantleFund. All rights reserved.
         </div>
       </footer>
     </div>
